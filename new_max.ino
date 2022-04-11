@@ -65,10 +65,10 @@ void loop()
         if(i==0)
           {
             Serial.print("Heart rate:");
-//            BPM = pox.getHeartRate();
+            BPM = pox.getHeartRate();
             Serial.print(BPM);
             Serial.print("bpm / SpO2:");
-//            SPO2 = pox.getSpO2();
+            SPO2 = pox.getSpO2();
             Serial.print(SPO2);
             Serial.println("%");
             
