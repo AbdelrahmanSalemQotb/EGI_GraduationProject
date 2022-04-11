@@ -5,20 +5,18 @@
 #include "MAX30100_PulseOximeter.h"
 #include <Adafruit_MLX90614.h>
 
+#define REPORTING_PERIOD_MS     1000
+
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 float object;
 int BPM,SPO2;
 
-
 char auth[] = "qXCkVaXrY7nfQW1Ovz4-8dy_7qpKDVjQ";             // You should get Auth Token in the Blynk App.
 char ssid[] = "mostafa";                              // Your WiFi credentials.
 char pass[] = "000011122";
 
-
-#define REPORTING_PERIOD_MS     1000
-
-bool i=0;
+bool flag=0;
 PulseOximeter pox;
 
 uint32_t tsLastReport = 0;
@@ -27,6 +25,8 @@ uint32_t tsLastReport = 0;
 void onBeatDetected()
 {
     Serial.println("Beat!");
+//    BPM = pox.getHeartRate();
+//    SPO2 = pox.getSpO2();
 }
 
 void setup()
@@ -62,7 +62,7 @@ void loop()
     // Asynchronously dump heart rate and oxidation levels to the serial
     // For both, a value of 0 means "invalid"
     if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
-        if(i==0)
+        if(flag==0)
           {
             Serial.print("Heart rate:");
             BPM = pox.getHeartRate();
@@ -76,14 +76,14 @@ void loop()
             (object>0)&&(object<100)? : object=0;
             Serial.print("Object = "); Serial.print(object);
             Serial.println();
-            i=1;
+            flag=1;
           }
         else
         {
             Blynk.virtualWrite(V3, BPM);
             Blynk.virtualWrite(V4, SPO2);
             Blynk.virtualWrite(V5, object);
-            i=0;
+            flag=0;
         }
         tsLastReport = millis();
     }
