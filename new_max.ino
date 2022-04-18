@@ -58,7 +58,7 @@ void onBeatDetected()
    #endif
     BPM = pox.getHeartRate();
     SPO2 = pox.getSpO2();
-    if (SPO2>100&& SPO2<0)
+    if (SPO2>100 || SPO2<0)
             {
               SPO2=0;
             }
@@ -140,6 +140,7 @@ void LCD_Setup(void)
 
 void LCD_Report_Data (void)
 {
+  //////////////////////////////////////////////////////
 //  if(WiFi.status() == WL_CONNECTED)
 //    {
 //      #ifdef Serial_Debug
@@ -175,7 +176,7 @@ void LCD_Report_Data (void)
 //      lcd.print("  Server  ");
 //      lcd.write(1);
 //    }
-//  
+//  ////////////////////////////////////////////////
   lcd.setCursor(0, 1);
   lcd.print("SPO2  = ");
   
@@ -299,7 +300,7 @@ void loop()
             Serial.print(SPO2);
             Serial.println("%");
             #endif
-            if (SPO2>100&& SPO2<0)
+            if (SPO2>100 || SPO2<0)
             {
               SPO2=0;
             }
@@ -325,7 +326,7 @@ void loop()
               }
             flag=2;
         }
-        else if (flag ==2)
+        else if (flag == 2)
         {
           LCD_Report_Data();
           flag=3;
@@ -344,7 +345,7 @@ void loop()
 
               flag=4;
         }
-        else if (Blynk.connected())
+        else if (Blynk.connected() && flag == 4 )
         {
             Blynk.virtualWrite(V3, BPM);
             Blynk.virtualWrite(V4, SPO2);
@@ -360,12 +361,6 @@ void loop()
           #endif
           lcd.setCursor(0, 0);
           lcd.print("Server disconnected");
-          // Test connecting after disconnect
-          if(WiFi.status() == WL_CONNECTED)
-          {
-            Blynk.config(BLYNK_AUTH_TOKEN);
-            Blynk.connect();
-          }
 
         }
 
