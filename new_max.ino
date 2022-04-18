@@ -30,7 +30,8 @@ PulseOximeter pox;
 int   BPM   ;
 int   SPO2  ;
 byte flag = 0;
-float object ;
+int object ;
+int ambiant;
 uint32_t tsLastReport = 0;
 
 byte Heart[8] = {
@@ -57,6 +58,10 @@ void onBeatDetected()
    #endif
     BPM = pox.getHeartRate();
     SPO2 = pox.getSpO2();
+    if (SPO2>100&& SPO2<0)
+            {
+              SPO2=0;
+            }
 }
 
     //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
@@ -73,7 +78,7 @@ void wifiSetup (void)
 
     // reset settings - wipe stored credentials for testing
     // these are stored by the esp library
-    wm.resetSettings();
+//    wm.resetSettings();
 
     // Automatically connect using saved credentials,
     // if connection fails, it starts an access point with the specified name ( "AutoConnectAP"),
@@ -104,7 +109,6 @@ void wifiSetup (void)
         lcd.print("  Failed to connect");
         lcd.setCursor(0, 1);
         lcd.print("");
-        delay(1000);
         
           
     } 
@@ -120,8 +124,6 @@ void wifiSetup (void)
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("WIFI Connected");
-        
-        delay(1000);
     }
 }
 
@@ -131,7 +133,7 @@ void LCD_Setup(void)
   
   // Make sure backlight is on       
   lcd.backlight();
-  
+  lcd.createChar(0,Heart);
   // Clears the LCD screen
   lcd.clear(); 
 }
@@ -331,11 +333,13 @@ void loop()
         }
         else if ( flag == 3 )
         {
-            object=mlx.readObjectTempC(); 
-            (object>0)&&(object<100)? : object=0;
+            object = mlx.readObjectTempC();
+//            ambiant = mlx.readAmbientTempC();
             #ifdef Serial_Debug
             Serial.print("Object = "); Serial.print(object);
             Serial.println();
+//            Serial.print("ambiant = "); Serial.print(ambiant);
+//            Serial.println();
             #endif
 
               flag=4;
@@ -355,7 +359,14 @@ void loop()
           Serial.println("Server disconnected");
           #endif
           lcd.setCursor(0, 0);
-          lcd.print("Server Not disconnected");
+          lcd.print("Server disconnected");
+          // Test connecting after disconnect
+          if(WiFi.status() == WL_CONNECTED)
+          {
+            Blynk.config(BLYNK_AUTH_TOKEN);
+            Blynk.connect();
+          }
+
         }
 
           tsLastReport = millis();
