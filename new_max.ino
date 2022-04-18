@@ -3,9 +3,9 @@
 #define BLYNK_AUTH_TOKEN "xNSASj75s6HnPpghBgUfpXH8MkvoLlXj"
 
 // Uncomment for debugging
-#define Serial_Debug
-#define BLYNK_PRINT Serial
-#define BLYNK_DEBUG
+// #define Serial_Debug
+// #define BLYNK_PRINT Serial
+// #define BLYNK_DEBUG
 
 #include <Wire.h>
 #include <Blynk.h>
@@ -30,7 +30,7 @@ PulseOximeter pox;
 int   BPM   ;
 int   SPO2  ;
 byte flag = 0;
-int object ;
+float object ;
 int ambiant;
 uint32_t tsLastReport = 0;
 
@@ -198,10 +198,10 @@ void LCD_Report_Data (void)
   lcd.setCursor(8, 2);
   lcd.print(BPM);
   lcd.setCursor(12, 2);
-  lcd.print("BPM");
-  lcd.setCursor(17, 2);
   lcd.write(0);
+  lcd.print("BPM");
 
+  
   lcd.setCursor(8, 3);
   lcd.print("       ");
   lcd.setCursor(8, 3);
@@ -278,7 +278,8 @@ if(WiFi.status() == WL_CONNECTED){
 
 void loop()
 {
-  if (Blynk.connected())
+  if(WiFi.status() == WL_CONNECTED)
+  // if (Blynk.connected())
   {
     Blynk.run();
   } 
