@@ -272,6 +272,9 @@ void loop()
       if ((SPO2 > 0 && SPO2 < 90) || (BPM > 100) || (object > 37))
       {
         digitalWrite(Buzzer_Pin, HIGH);
+        Blynk.logEvent("critical_value",  ((SPO2 > 0 && SPO2 < 90)?(String("SPO2: ") + String(SPO2)):"") +
+                                          (BPM>100?(String("  HR: ") +String(BPM)) :"" ) +
+                                          ((object > 37)? (String("\nTemp: " ) + String((int)object)):"") );
         #ifdef Serial_Debug
           Serial.println(" Buzzer ON");
         #endif
@@ -319,9 +322,8 @@ void loop()
         Blynk.virtualWrite(V5, object);
         flag = 0;
       }
-      break;
-
-    default:
+      else
+      {
       // server not connected ( hence no report )
       flag = 0;
       #ifdef Serial_Debug
@@ -329,7 +331,12 @@ void loop()
       #endif
       lcd.setCursor(0, 0);
       lcd.print("Server disconnected");
+      }
+
       break;
+
+    default:
+    break;
     }
     tsLastReport = millis();
   }
