@@ -17,7 +17,7 @@
 #include <WiFiManager.h>
 
 #define MANAGER_USER "EGI"
-#define MANAGER_PASS "EGI1718169"
+#define MANAGER_PASS "123456789"
 #define REPORTING_PERIOD_MS 350
 #define LCD_I2C_Address 0x27
 #define Buzzer_Pin D5
@@ -59,7 +59,7 @@ void onBeatDetected()
   {
     SPO2 = 0;
   }
-  if (!digitalRead(IR_Pin))
+  if (digitalRead(IR_Pin))
   {
     SPO2 = 0;
     BPM = 0;
@@ -269,12 +269,12 @@ void loop()
       break;
 
     case 1:
-      if ((SPO2 > 0 && SPO2 < 90) || (BPM > 100) || (object > 37))
+      if ((SPO2 > 0 && SPO2 < 90) || (BPM > 100) || ((int)object > 37))
       {
         digitalWrite(Buzzer_Pin, HIGH);
         Blynk.logEvent("critical_value",  ((SPO2 > 0 && SPO2 < 90)?(String("SPO2: ") + String(SPO2)):"") +
                                           (BPM>100?(String("  HR: ") +String(BPM)) :"" ) +
-                                          ((object > 37)? (String("\nTemp: " ) + String((int)object)):"") );
+                                          (((int)object > 37)? (String("\nTemp: " ) + String((int)object)):"") );
         #ifdef Serial_Debug
           Serial.println(" Buzzer ON");
         #endif
@@ -290,7 +290,7 @@ void loop()
       break;
 
     case 2:
-      if (digitalRead(IR_Pin))
+      if (!digitalRead(IR_Pin))
       {
         object = mlx.readObjectTempC();
       }
