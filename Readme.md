@@ -23,7 +23,7 @@ If it senses a critical value from the sensors, an alarm sound starts to announc
 [![Project Video]()]()
 
 ## Block Diagram ##
-![Block Diagram](https://github.com/AbdelrahmanSalemQotb/Ventilator-by-sensing-vital-human-functions/blob/Main/Block%20Diagram/Block%20Diagram.png)
+![Block Diagram](https://github.com/AbdelrahmanSalemQotb/Ventilator-by-sensing-vital-human-functions/blob/Main/Block%20Diagram/Block%20Diagram.jpg)
 
 ## Installation Instructions ##
 1. Download the latest Arduino IDE from their website [here](https://www.arduino.cc/en/Main/Software).
