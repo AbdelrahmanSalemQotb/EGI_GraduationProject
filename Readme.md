@@ -20,7 +20,7 @@ When the patient hands are detected in the IR sensor field, it automatically pow
 If it senses a critical value from the sensors, an alarm sound starts to announce to anyone near the patient , sends an email and notification message to the patient case observer that there's a critical value  that there's a critical value that needs to be take care of. 
 
 ## Project Video ##
-[![Project Video]()]()
+[![Project Video](https://img.youtube.com/vi/IrqES9ob4Ys/0.jpg)](https://www.youtube.com/watch?v=IrqES9ob4Ys)
 
 ## Block Diagram ##
 ![Block Diagram](https://github.com/AbdelrahmanSalemQotb/Ventilator-by-sensing-vital-human-functions/blob/Main/Block%20Diagram/Block%20Diagram.jpg)
